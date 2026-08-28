@@ -1,0 +1,35 @@
+{
+  "name": "@nubisco/cms-core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic core for the Nubisco CMS: the content contract, field resolution, and the link, image and richtext models. Framework bindings (cms-vue, and later cms-react) build on this.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nubisco/cms-vue.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/check-no-framework.mjs && tsc -p tsconfig.json",
+    "check:core": "node scripts/check-no-framework.mjs",
+    "types:check": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
