@@ -1,5 +1,5 @@
-import type { LogicGraph, LogicKind } from './contract'
-import type { LogicEnv } from './evaluate'
+import type { LogicGraph, LogicKind } from './contract/index.js'
+import type { LogicEnv } from './evaluate.js'
 
 /**
  * App-side logic for the graph form of a Condition (the data shapes live in the

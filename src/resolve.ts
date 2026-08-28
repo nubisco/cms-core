@@ -1,4 +1,4 @@
-import type { FieldValue, ImageValue, LinkValue, TRef } from './contract'
+import type { FieldValue, ImageValue, LinkValue, TRef } from './contract/index.js'
 
 export function isTRef(v: unknown): v is TRef {
   return typeof v === 'object' && v !== null && '$t' in v

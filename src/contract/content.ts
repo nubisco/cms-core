@@ -121,7 +121,7 @@ export interface BlockInstance {
   variation?: string
   fields: Record<string, FieldValue>
   /** Visibility logic. Absent means always visible. */
-  when?: import('./logic').Condition
+  when?: import('./logic.js').Condition
   /** Nested blocks for composed blocks with slots. */
   slots?: Record<string, BlockInstance[]>
 }
@@ -144,7 +144,7 @@ export interface PageDocument {
   /** Named zones, usually just `main`. */
   zones: Record<string, Zone>
   /** Whole-page gate, e.g. a product feature flag. */
-  when?: import('./logic').Condition
+  when?: import('./logic.js').Condition
   /** Logic graphs referenced by block/page conditions via { kind: 'graph', graphId }. */
-  graphs?: Record<string, import('./logic').LogicGraph>
+  graphs?: Record<string, import('./logic.js').LogicGraph>
 }

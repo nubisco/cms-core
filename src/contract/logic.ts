@@ -88,7 +88,7 @@ export interface LogicInputDefinition {
   label: string
   valueType: LogicValueType
   /** Parameters the author fills in, e.g. featureFlag needs a `flag`. */
-  params?: Record<string, import('./content').FieldSchema>
+  params?: Record<string, import('./content.js').FieldSchema>
   resolveAt: ResolveAt
   /** Allowed values for enum inputs (environment, region, locale). */
   enumValues?: string[]

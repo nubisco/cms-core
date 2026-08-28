@@ -1,5 +1,5 @@
-import type { Condition, LogicGraph, Op } from './contract'
-import { evaluateGraph } from './graph'
+import type { Condition, LogicGraph, Op } from './contract/index.js'
+import { evaluateGraph } from './graph.js'
 
 /**
  * Resolves one logic input to a boolean, given the author's params/op/value.

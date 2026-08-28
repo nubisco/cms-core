@@ -11,8 +11,8 @@
  * `alt` may be a `{ $t }` reference like any other localized string, so it is
  * resolved through the message table rather than printed as a key.
  */
-import type { FieldValue, ImageValue, TRef } from './contract'
-import { text } from './resolve'
+import type { FieldValue, ImageValue, TRef } from './contract/index.js'
+import { text } from './resolve.js'
 
 export interface ResolvedImage {
   /** '' when nothing is authored, which is the caller's signal to render nothing. */
