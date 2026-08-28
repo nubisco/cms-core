@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run types:check
+
+      # 0.1.0 built clean, typechecked clean, and crashed on import with
+      # ERR_UNSUPPORTED_DIR_IMPORT. Nothing above this line can catch that: the
+      # only way to know the tarball works is to load it the way a consumer will.
+      - run: pnpm run check:esm

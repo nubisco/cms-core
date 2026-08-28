@@ -27,16 +27,42 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node scripts/check-no-framework.mjs && tsc -p tsconfig.json",
+    "build": "node scripts/check-no-framework.mjs && tsc -p tsconfig.json && node scripts/check-esm.mjs",
     "check:core": "node scripts/check-no-framework.mjs",
-    "types:check": "tsc -p tsconfig.json --noEmit"
+    "types:check": "tsc -p tsconfig.json --noEmit",
+    "check:esm": "node scripts/check-esm.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^25.0.3"
   },
   "homepage": "https://github.com/nubisco/cms-core#readme",
   "bugs": {
     "url": "https://github.com/nubisco/cms-core/issues"
   },
-  "author": "José Silva <jose@nubisco.io>"
+  "author": "José Silva <jose@nubisco.io>",
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]"
+        }
+      ]
+    ]
+  }
 }
