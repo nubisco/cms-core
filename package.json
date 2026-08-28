@@ -1,6 +1,6 @@
 {
   "name": "@nubisco/cms-core",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Framework-agnostic core for the Nubisco CMS: the content contract, field resolution, and the link, image and richtext models. Framework bindings (cms-vue, and later cms-react) build on this.",
   "type": "module",
   "main": "./dist/index.js",
