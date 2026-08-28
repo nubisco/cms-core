@@ -1,0 +1,8 @@
+# Default owner for all files
+* @joseporto
+
+# Critical automation and release configuration. This package publishes to a
+# PUBLIC npm registry, so a change here can ship code to every consumer.
+/.github/workflows/* @joseporto
+/package.json @joseporto
+/scripts/* @joseporto
