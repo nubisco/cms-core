@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/nubisco/cms-core/compare/v1.0.0...v1.1.0) (2026-10-06)
+
+
+### Features
+
+* sanitizeRichText, and links refuse schemes that run code ([7df16d0](https://github.com/nubisco/cms-core/commit/7df16d02da1cb48be4d4512ba6389fb0e106386e))
+
 # 1.0.0 (2026-08-28)
 
 
