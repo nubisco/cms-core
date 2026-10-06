@@ -26,6 +26,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - run: pnpm run types:check
+      - run: node --test test/*.test.mjs
 
       # 0.1.0 built clean, typechecked clean, and crashed on import with
       # ERR_UNSUPPORTED_DIR_IMPORT. Nothing above this line can catch that: the

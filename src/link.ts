@@ -35,6 +35,8 @@
  *     rendered HTML either.
  */
 
+import { isSafeUrl } from './sanitize.js'
+
 /** Delivery's verdict, plus the two verdicts a renderer reaches on its own. */
 export type LinkStatus =
   | 'ok'
@@ -46,6 +48,8 @@ export type LinkStatus =
   | 'empty'
   /** A reference delivery did not resolve (a media id with no asset URL). */
   | 'unresolved'
+  /** A URL in a scheme that could run code (javascript:, data:, vbscript:). Never rendered. */
+  | 'unsafe'
 
 export type LinkKind = 'doc' | 'url' | 'media' | 'none'
 
@@ -117,7 +121,8 @@ function str(v: unknown): string {
 
 function readStatus(v: unknown): LinkStatus | '' {
   const s = str(v)
-  if (s === 'ok' || s === 'missing' || s === 'unpublished' || s === 'empty' || s === 'unresolved') return s
+  if (s === 'ok' || s === 'missing' || s === 'unpublished' || s === 'empty' || s === 'unresolved' || s === 'unsafe')
+    return s
   return ''
 }
 
@@ -225,12 +230,26 @@ function fromObject(o: Bag): ResolvedLink {
  * half-authored document still renders a complete page).
  */
 export function normalizeLink(value: unknown, fallback = ''): ResolvedLink {
+  return safe(resolveLink(value, fallback))
+}
+
+function resolveLink(value: unknown, fallback: string): ResolvedLink {
   if (typeof value === 'string') {
     const v = fromString(value)
     return v.ok || v.status !== 'empty' ? v : fromString(fallback)
   }
   if (value && typeof value === 'object' && !Array.isArray(value)) return fromObject(value as Bag)
   return fromString(fallback)
+}
+
+/**
+ * The last word on every link: a destination in a scheme that could run code
+ * (`javascript:`, `data:`, `vbscript:`) renders inert, whoever wrote it. Even a
+ * reference delivery marked 'ok' is checked, because a document is only as
+ * trustworthy as whoever last saved it.
+ */
+function safe(link: ResolvedLink): ResolvedLink {
+  return link.ok && !isSafeUrl(link.href) ? inert('unsafe', link.kind) : link
 }
 
 /** The first alias that is filled, for documents that spell a field several ways. */

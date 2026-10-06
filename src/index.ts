@@ -39,6 +39,7 @@ export type {
   RichTextSerializers,
 } from './richtext.js'
 export { compileLinks, nodeTypeOf, applySerializers, isHtml } from './richtext.js'
+export { sanitizeRichText, isSafeUrl } from './sanitize.js'
 
 // Conditional content: visibility rules authored in the console.
 export type { InputResolver, LogicEnv } from './evaluate.js'

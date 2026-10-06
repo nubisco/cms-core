@@ -30,7 +30,8 @@
     "build": "node scripts/check-no-framework.mjs && tsc -p tsconfig.json && node scripts/check-esm.mjs",
     "check:core": "node scripts/check-no-framework.mjs",
     "types:check": "tsc -p tsconfig.json --noEmit",
-    "check:esm": "node scripts/check-esm.mjs"
+    "check:esm": "node scripts/check-esm.mjs",
+    "test": "pnpm run build && node --test test/*.test.mjs"
   },
   "devDependencies": {
     "typescript": "^5.9.3",
@@ -42,7 +43,7 @@
   "bugs": {
     "url": "https://github.com/nubisco/cms-core/issues"
   },
-  "author": "José Silva <jose@nubisco.io>",
+  "author": "Jos\u00e9 Silva <jose@nubisco.io>",
   "release": {
     "branches": [
       "master"
