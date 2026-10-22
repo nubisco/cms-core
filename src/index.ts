@@ -29,6 +29,8 @@ export { isInternalHref, normalizeLink, pickField, pickLink, linkAttrs, linkTag,
 
 export type { ResolvedImage } from './image.js'
 export { normalizeImage, hasImage } from './image.js'
+export type { ResolvedVideo } from './video.js'
+export { normalizeVideo, hasVideo } from './video.js'
 
 // Rich text as a model, not a string: a renderer decides the tags.
 export type {

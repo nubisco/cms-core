@@ -17,6 +17,7 @@ export type FieldType =
   | 'number'
   | 'boolean'
   | 'image'
+  | 'video'
   | 'link'
   | 'color'
   | 'date'
@@ -62,13 +63,30 @@ export interface ImageValue {
   h?: number
 }
 
+/**
+ * A short silent loop in place of a still picture: a hero film, a product
+ * micro-demo. The poster is required, because it is the first paint and what
+ * stays on screen when motion is reduced. `label` says what it shows, for a
+ * screen reader. Without one the video is decorative.
+ */
+export interface VideoValue {
+  src: string
+  poster: string
+  /** A lighter or portrait cut for narrow screens. */
+  mobileSrc?: string
+  label?: TRef
+  /** Intrinsic size, when known, to avoid layout shift. */
+  w?: number
+  h?: number
+}
+
 export interface LinkValue {
   href: string
   label?: TRef
   external?: boolean
 }
 
-export type FieldValue = TRef | string | number | boolean | ImageValue | LinkValue
+export type FieldValue = TRef | string | number | boolean | ImageValue | VideoValue | LinkValue
 
 // ─── Blocks: placeable units built from Fields ───────────────────────────
 
