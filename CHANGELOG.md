@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/nubisco/cms-core/compare/v1.1.0...v1.2.0) (2026-10-22)
+
+
+### Features
+
+* a video field, normalised once (normalizeVideo, hasVideo) ([acc9850](https://github.com/nubisco/cms-core/commit/acc9850b8b0316a7b930a78465ac43f352bcdf84))
+
 # [1.1.0](https://github.com/nubisco/cms-core/compare/v1.0.0...v1.1.0) (2026-10-06)
 
 
