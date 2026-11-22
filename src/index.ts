@@ -44,7 +44,7 @@ export { compileLinks, nodeTypeOf, applySerializers, isHtml } from './richtext.j
 export { sanitizeRichText, isSafeUrl } from './sanitize.js'
 // Every heading gets a link target derived from its text, since the sanitiser
 // keeps no authored id.
-export { slugHeadings, headingSlug } from './headings.js'
+export { slugHeadings, headingSlug, headingIds, transferHeadingIds } from './headings.js'
 
 // Conditional content: visibility rules authored in the console.
 export type { InputResolver, LogicEnv } from './evaluate.js'
