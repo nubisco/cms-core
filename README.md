@@ -43,6 +43,12 @@ every page:
   (`javascript:`, `data:`, `vbscript:`) inert, with status `'unsafe'`, even when
   the document marks it resolved. `isSafeUrl()` is the check on its own.
 
+The sanitiser keeps no attributes on headings, so an authored `id` never reaches
+the page. `slugHeadings(html)` gives every `h2` to `h6` an id derived from its
+text instead (`7. Installed apps: downloads` becomes `installed-apps-downloads`,
+a repeat gets `-2`), so every heading is a link target without anyone typing
+one. Run it after `sanitizeRichText`, which would otherwise strip what it adds.
+
 ## The one rule
 
 A module in this package may not import `vue`, `react`, `svelte`, `preact` or
