@@ -97,7 +97,7 @@ const NAMED_ENTITIES: Record<string, string> = {
 }
 
 /** Decodes the entities an attribute value can hide a scheme behind. */
-function decodeEntities(v: string): string {
+export function decodeEntities(v: string): string {
   return v.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);?/gi, (m, body: string) => {
     if (body[0] === '#') {
       const code = body[1] === 'x' || body[1] === 'X' ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10)
