@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/nubisco/cms-core/compare/v1.3.0...v1.4.0) (2026-11-22)
+
+
+### Features
+
+* a heading keeps a plain-token id, and a translation takes its source's heading ids ([#3](https://github.com/nubisco/cms-core/issues/3)) ([edd4ca3](https://github.com/nubisco/cms-core/commit/edd4ca3b38aff04900b250e18506b8c48a8f20f1))
+
 # [1.3.0](https://github.com/nubisco/cms-core/compare/v1.2.0...v1.3.0) (2026-11-22)
 
 
