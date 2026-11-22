@@ -23,11 +23,13 @@ const ALLOWED: Record<string, readonly string[]> = {
   p: [],
   br: [],
   hr: [],
-  h2: [],
-  h3: [],
-  h4: [],
-  h5: [],
-  h6: [],
+  // A heading keeps an id so delivery can carry the source language's anchors
+  // onto a translation (headings.ts). The value is restricted to a plain token.
+  h2: ['id'],
+  h3: ['id'],
+  h4: ['id'],
+  h5: ['id'],
+  h6: ['id'],
   strong: [],
   b: [],
   em: [],
@@ -81,6 +83,9 @@ const DROP_WITH_CONTENT = new Set([
   'math',
   'select',
 ])
+
+/** What a heading id may look like: a letter, then letters, digits, '-' or '_'. */
+const ID_TOKEN = /^[a-z][a-z0-9_-]{0,127}$/i
 
 const SAFE_SCHEMES = new Set(['http:', 'https:', 'mailto:', 'tel:', 'sms:'])
 
@@ -137,6 +142,7 @@ function cleanAttr(name: string, raw: string): string | null {
   if (name === 'href' || name === 'src') return isSafeUrl(value) ? value.trim() : null
   if (name === 'target') return value === '_blank' || value === '_self' ? value : null
   if (name === 'loading') return value === 'lazy' || value === 'eager' ? value : null
+  if (name === 'id') return ID_TOKEN.test(value.trim()) ? value.trim() : null
   if (name === 'width' || name === 'height' || name === 'colspan' || name === 'rowspan' || name === 'start') {
     return /^\d{1,5}$/.test(value.trim()) ? value.trim() : null
   }

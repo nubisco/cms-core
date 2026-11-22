@@ -14,8 +14,14 @@
  * A heading that already carries an id (a product's own serializer may add one)
  * is left alone, and its id still counts for deduplication.
  *
- * Runs AFTER sanitizeRichText, never before it: the sanitiser would strip what
- * this adds. Framework-free and DOM-free, like the rest of this package.
+ * Runs after sanitizeRichText, which keeps an id on a heading only when it is a
+ * plain token. Framework-free and DOM-free, like the rest of this package.
+ *
+ * A translation is a separate HTML value, so slugging it would give the German
+ * page German anchors and a link to the English one would land at the top.
+ * `transferHeadingIds` gives a translated body the ids of its source, heading
+ * by heading, so one anchor works in every language. Delivery calls it when it
+ * swaps a translated richtext value in.
  */
 
 import { decodeEntities } from './sanitize.js'
@@ -62,5 +68,31 @@ export function slugHeadings(html: string): string {
     const base = headingSlug(inner)
     if (!base) return full
     return `<${tag}${attrs} id="${claim(base)}">${inner}</${tag}>`
+  })
+}
+
+/** The ids slugHeadings gives the headings of `html`, in document order. */
+export function headingIds(html: string): string[] {
+  return [...slugHeadings(html).matchAll(HEADING_RE)].map((m) => ID_RE.exec(m[2] ?? '')).map((m) => m?.[1] ?? m?.[2] ?? m?.[3] ?? '')
+}
+
+/**
+ * The translated HTML with the ids of the source's headings, position by
+ * position, so an anchor derived from the source text resolves on every
+ * language's page. A translated heading that already carries an id keeps it.
+ * When the two bodies do not hold the same number of headings, the translation
+ * is returned unchanged: there is no safe way to pair them, and slugHeadings on
+ * the page gives it ids of its own.
+ */
+export function transferHeadingIds(source: string, translated: string): string {
+  if (typeof translated !== 'string' || !translated || typeof source !== 'string' || !source) return translated
+  const ids = headingIds(source)
+  const targets = [...translated.matchAll(HEADING_RE)]
+  if (!ids.length || ids.length !== targets.length) return translated
+  let i = 0
+  return translated.replace(HEADING_RE, (full, tag: string, attrs: string, inner: string) => {
+    const id = ids[i++]
+    if (!id || ID_RE.test(attrs)) return full
+    return `<${tag}${attrs} id="${id}">${inner}</${tag}>`
   })
 }

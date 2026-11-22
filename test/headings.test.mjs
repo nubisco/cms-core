@@ -1,7 +1,7 @@
 // Run against the BUILT package, the way a consumer loads it: pnpm test.
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { slugHeadings, headingSlug, sanitizeRichText } from '../dist/index.js'
+import { slugHeadings, headingSlug, headingIds, transferHeadingIds, sanitizeRichText } from '../dist/index.js'
 
 test('a heading gets an id from its text, a leading ordinal dropped', () => {
   assert.equal(headingSlug('7. Installed apps: downloads, updates and the install heartbeat'), 'installed-apps-downloads-updates-and-the-install-heartbeat')
@@ -32,7 +32,32 @@ test('a heading with no text left is left without an id, and empty input is empt
   assert.equal(slugHeadings(''), '')
 })
 
-test('runs after the sanitiser: the id survives, an authored one does not', () => {
-  const out = slugHeadings(sanitizeRichText('<h2 id="installed-apps">7. Installed apps: downloads</h2>'))
-  assert.equal(out, '<h2 id="installed-apps-downloads">7. Installed apps: downloads</h2>')
+test('the sanitiser keeps a heading id that is a plain token, and only that', () => {
+  assert.equal(sanitizeRichText('<h2 id="installed-apps">7. Installed apps</h2>'), '<h2 id="installed-apps">7. Installed apps</h2>')
+  assert.equal(sanitizeRichText('<h3 id="a b">x</h3><h2 id="1st">y</h2><h2 id="x&quot;onload=1">z</h2>'), '<h3>x</h3><h2>y</h2><h2>z</h2>')
+  assert.equal(sanitizeRichText('<p id="lead">x</p>'), '<p>x</p>')
+})
+
+test('an id the sanitiser kept is left alone by slugHeadings', () => {
+  const out = slugHeadings(sanitizeRichText('<h2 id="installed-apps">7. Installed apps: downloads</h2><h2>Alter</h2>'))
+  assert.equal(out, '<h2 id="installed-apps">7. Installed apps: downloads</h2><h2 id="alter">Alter</h2>')
+})
+
+test('a translation takes the ids of its source, heading by heading', () => {
+  const source = '<h2>7. Installed apps: downloads</h2><p>a</p><h3>The install heartbeat</h3><h2>8. Alter</h2>'
+  const de = '<h2>7. Installierte Apps: Downloads</h2><p>b</p><h3>Der Installations-Heartbeat</h3><h2>8. Alter</h2>'
+  assert.deepEqual(headingIds(source), ['installed-apps-downloads', 'the-install-heartbeat', 'alter'])
+  assert.equal(
+    transferHeadingIds(source, de),
+    '<h2 id="installed-apps-downloads">7. Installierte Apps: Downloads</h2><p>b</p><h3 id="the-install-heartbeat">Der Installations-Heartbeat</h3><h2 id="alter">8. Alter</h2>',
+  )
+  // The page then slugs nothing new: the carried ids win.
+  assert.equal(slugHeadings(sanitizeRichText(transferHeadingIds(source, de))), transferHeadingIds(source, de))
+})
+
+test('a translation with a different number of headings is returned unchanged', () => {
+  const source = '<h2>One</h2><h2>Two</h2>'
+  assert.equal(transferHeadingIds(source, '<h2>Eins</h2>'), '<h2>Eins</h2>')
+  assert.equal(transferHeadingIds('<p>no headings</p>', '<h2>Eins</h2>'), '<h2>Eins</h2>')
+  assert.equal(transferHeadingIds(source, ''), '')
 })
